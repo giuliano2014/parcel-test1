@@ -1,0 +1,12 @@
+{
+  "name": "parcel-test1",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "NODE_ENV=developpement parcel index.html --open",
+    "build": "NODE_ENV=production parcel build index.html --out-dir prod"
+  },
+  "author": "",
+  "description": ""
+}
