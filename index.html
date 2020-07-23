@@ -1,5 +1,73 @@
+<!DOCTYPE html>
 <html>
+  <head>
+    <meta http-equiv="Content-Security-Policy" content="default-src *  data: blob: 'unsafe-inline' 'unsafe-eval'; script-src * 'unsafe-inline' 'unsafe-eval'; connect-src * 'unsafe-inline'; img-src * data: blob: 'unsafe-inline'; frame-src *; style-src * data: blob: 'unsafe-inline'; font-src * data: blob: 'unsafe-inline';">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Micro Frontend Root</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="importmap-type" content="systemjs-importmap">
+    <script type="systemjs-importmap">
+      {
+        "imports": {
+          "navbar": "http://localhost:1900/main.js",
+          "app-1": "http://localhost:1901/main.js",
+          "app-2": "http://localhost:1902/main.js",
+          "single-spa": "https://cdnjs.cloudflare.com/ajax/libs/single-spa/5.5.0/system/single-spa.min.js"
+        }
+      }
+    </script>
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/single-spa/5.5.0/system/single-spa.min.js" as="script" crossorigin="anonymous" />
+    <script src='https://unpkg.com/core-js-bundle@3.1.4/minified.js'></script>
+    <script src="https://unpkg.com/zone.js"></script>
+    <script src="https://unpkg.com/import-map-overrides@1.15.1/dist/import-map-overrides.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/4.0.0/system.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/4.0.0/extras/amd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/4.0.0/extras/named-exports.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/4.0.0/extras/named-register.min.js"></script>
+  </head>
   <body>
+    <script>
+      System.import('single-spa').then(function (singleSpa) {
+
+        singleSpa.registerApplication(
+          'navbar',
+          function () {
+            return System.import('navbar');
+          },
+          function (location) {
+            // return location.pathname.startsWith('/navbar');
+            return true;
+          }
+        );
+
+        singleSpa.registerApplication(
+          'app-1',
+          function () {
+            return System.import('app-1');
+          },
+          function (location) {
+            return location.pathname.startsWith('/app-1');
+            // return true;
+          }
+        );
+
+        singleSpa.registerApplication(
+          'app-2',
+          function () {
+            return System.import('app-2');
+          },
+          function (location) {
+            return location.pathname.startsWith('/app-2');
+            // return true;
+          }
+        );
+        
+        singleSpa.start();
+      });
+    </script>
+    <import-map-overrides-full></import-map-overrides-full>
     <script src="./index.js"></script>
   </body>
 </html>
+
